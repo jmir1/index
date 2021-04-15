@@ -17,68 +17,13 @@ const pingTable = async (table) => {
     alreadyPinged[table] = true
 
     console.log("Pinging for table", table)
-    const urls = window.rawData[table].map(e => {
-        if (e) {
-            let urls = workaroundAddressArray(e["siteAddresses"], "array")
-            window.online[urls[0]] = "pinging"
-            return urls[0]
-        }
-    })
+    
 
     const status = [{"url":"https://stocks.jmir.xyz","time":"1618507859","status":"online"}];
 
     if (status) {
         status.forEach(s => window.online[s["url"]] = s["status"])
         window.dataTables[table].redraw(true)
-    }
-}
-
-// change i-am-an-adult setting
-const adultConsent = (yes) => {
-    let remember = document.querySelector("input#remember-i-am-an-adult").checked
-    console.log("I am an adult changed to:", yes, "remembering:", remember)
-    if (yes === "save") {
-        yes = !document.querySelector("#setting-adult-no").classList.contains("btn-success")
-    }
-
-    if (remember) {
-        localStorage.setItem("i-am-an-adult", yes.toString())
-    } else if (localStorage.getItem("i-am-an-adult")) {
-        localStorage.removeItem("i-am-an-adult")
-    }
-
-    document.querySelectorAll(".i-am-a-adult").forEach(el => {
-        if (yes) {
-            if (el.classList.contains("d-none")) {
-                el.classList.remove("d-none")
-            }
-        } else {
-            if (!el.classList.contains("d-none")) {
-                el.classList.add("d-none")
-            }
-        }
-    })
-
-    let y = document.querySelector("#setting-adult-yes").classList,
-        n = document.querySelector("#setting-adult-no").classList;
-    if (yes) {
-        if (y.contains("btn-outline-danger")) {
-            y.remove("btn-outline-danger")
-            y.add("btn-danger")
-        }
-        if (n.contains("btn-success")) {
-            n.remove("btn-success")
-            n.add("btn-outline-success")
-        }
-    } else {
-        if (y.contains("btn-danger")) {
-            y.remove("btn-danger")
-            y.add("btn-outline-danger")
-        }
-        if (n.contains("btn-outline-success")) {
-            n.remove("btn-outline-success")
-            n.add("btn-success")
-        }
     }
 }
 
@@ -155,7 +100,7 @@ window.addEventListener('load', () => {
     addListenerMulti(document.querySelector("#tableSearch"), "keyup click", () => {
         const search = document.querySelector('#tableSearch').value
         Object.keys(window.dataTables).forEach(key => {
-            window.dataTables[key].setFilter("siteName", "like", search)
+            window.dataTables[key].setFilter("username", "like", search)
         })
     })
 })
