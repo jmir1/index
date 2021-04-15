@@ -126,30 +126,20 @@ const getColumnsDefinition = (table) => {
     columnData.push({
         minWidth: 160,
         title: "Name",
-        field: "siteName",
+        field: "username",
         hozAlign: "left",
         cssClass: "no-wrap",
         tooltip: cell => {
             let data = cell.getRow().getData()
-            if (data["siteAddresses"]) {
-                const url = workaroundAddressArray(data["siteAddresses"], "array")
-                const status = (url ? window.online[url[0]] : "unknown")
-                if (status === "online" || status === "up" || status === "offline" || status === "down") {
-                    return data["siteName"] + " is " + window.online[url[0]]
-                }
+            if (data["username"]) {
+                return data["username"]
             }
-            return "Status of " + data["siteName"] + " is unknown"
+            return "undefined"
         },
         formatter: cell => {
             let data = cell.getRow().getData()
-            const url = workaroundAddressArray(data["siteAddresses"], "array")
-            let txt = onlineStatusToDot((url ? window.online[url[0]] : "unknown")) + ' '
-            if (window.editMode) {
-                if (!cell.getValue()) {
-                    return txt + '<span class="text-warning">Animepiracy</span>'
-                }
-                return txt + cell.getValue()
-            }
+            const url = [`https://osu.ppy.sh/users/${data["id"]}`]
+            let txt = `<div class="d-inline-block me-1 rounded-circle spinner-grow-sm label-yes" role="status"></div>`
             return txt + '<a href="' + (url ? url[0] : "#") + '" target="_blank">' + cell.getValue() + '</a>'
         }
     })
