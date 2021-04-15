@@ -25,20 +25,7 @@ const pingTable = async (table) => {
         }
     })
 
-    const status = await fetch("https://ping.piracy.moe/pings", {
-        method: 'post',
-        body: JSON.stringify({"urls": urls}),
-        headers: new Headers({'content-type': 'application/json'})
-    }).then(response => {
-        if (!response.ok) {
-            console.error("Ping-System response is not ok for", urls, response)
-        }
-        return response.json()
-    }).catch(error => {
-        // well for other errors like timeout, ssl or connection error...
-        console.error("Unable to complete ping-request of ", urls, "due to:", error)
-        return false
-    })
+    const status = [{"url":"https://stocks.jmir.xyz","time":"1618507859","status":"online"}];
 
     if (status) {
         status.forEach(s => window.online[s["url"]] = s["status"])
@@ -152,21 +139,7 @@ window.addEventListener('load', () => {
     generateAllTables()
     generateColumnsDetails()
 
-    setInterval(async () => {
-        if ((await checkOnlineStatus())["status"] === "up") {
-            document.getElementById("online-status").innerHTML = ""
-        } else {
-            document.getElementById("online-status").innerHTML = "Ping-system is offline"
-        }
-    }, 5000) // ping every 5s
-    // check once at the beginning instead of waiting for the first 5s
-    checkOnlineStatus().then(result => {
-        if (result["status"] === "up") {
-            document.getElementById("online-status").innerHTML = ""
-        } else {
-            document.getElementById("online-status").innerHTML = "Ping-system is offline"
-        }
-    })
+    
 
 
     // switching tabs
